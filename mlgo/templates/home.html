@@ -1,0 +1,50 @@
+<div class="content">
+
+    <div class="row pb-4">
+        <div class="container ">
+            <div class="row">
+                <div class="col-sm">
+                </div>
+                <div class="col-sm-6">
+                    <a href="{{ url_for('main.home') }}"><img class="avatar" src="../static/assets/img/logo1.png" height="300" width="300"
+                            align="center"></a>
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-10 p-4">
+        <div class="card align-self-center">
+            <div class="card-body">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <fieldset>
+                        <div class="form-group">
+                            <label>Link of File</label>
+                            {{ form.url(class="form-control", placeholder="File from cloud, eg. Google Drive, Dropbox, OneDrive etc.") }}
+                        </div>
+                    </fieldset>
+                    <div>
+                        <div class="form-group">
+                            {{ form.download(class="btn btn-outline-info") }}
+                        </div>
+                    </div>
+                    <fieldset>
+                        <div class="form-group">
+                            <small id="emailHelp" class="form-text text-center text-white">
+                                You can also upload a data file from local storage.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            {{ form.data_file.label() }}
+                            {{ form.data_file(class="form-control-file") }}
+                        </div>
+                    </fieldset>
+                    <div>
+                        {{ form.submit(class="btn btn-outline-info") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
