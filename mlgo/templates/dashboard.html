@@ -1,0 +1,21 @@
+{% extends "layout" %}
+{% block content %}
+<div class="row">
+    {% for mlmodel in mlmodels %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <a href="{{ url_for('datatraining.options',dataset_name=mlmodel.dataset_name, algo_name=mlmodel.algo_name) }}"><h4 class="card-title">{{ mlmodel.algo_name }}</h4></a>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-primary">
+                    <span>Accuracy: {{ mlmodel.accuracy*100 }}</span>
+                </div>>
+                    <span>Normalization: Abhi kia nahi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
