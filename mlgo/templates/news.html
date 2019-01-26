@@ -1,6 +1,25 @@
-{% extends "layout" %}
+{% extends "layout_main.html" %}
 {% block content %}
 <div class="row">
-
+    {% for news in news_all %}
+    <div class="col-md-6">
+        <div class="card">
+            {% if news['urlToImage'] != None %}
+            <a href="{{ news['url'] }}"><img class="card-img-top" src="{{ news['urlToImage'] }}" alt="Card image cap" height="300"></a>
+            {% else %}
+            <a href="{{ news['url'] }}"><img class="card-img-top" src="../static/assets/img/default-ml.jpg" alt="Card image cap" height="300"></a>
+            {% endif %}
+            <div class="card-header">
+                <a href="#"><h4 class="card-title"><font size="4"><b><u>{{ news['title'] }}</u></b></font></h4></a>
+            </div>
+            <div class="card-body">
+                <p class="card-text"><b>{{ news['description'] }}</b></p>
+                <p class="card-text"><font size="2">Author: {{ news['author'] }}</font></p>
+                <p class="card-text"><font size="2">Published at: {{ news['publishedAt'] }} by - {{ news['name'] }}</font></p>
+                <p class="card-text"><font size="5">{{ news['content'] }}</font></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
