@@ -1,0 +1,373 @@
+{% extends "layout_main_r.html" %}
+{% block content %}
+
+{% if current_algo['SGD'] %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title">Stochastic Gradient Descent</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-5 pr-md-1">
+                            <div class="form-check form-check-radio">
+                                <label style="font-size: large; margin-left: 1em">Loss</label><br>
+                                <label class="form-check-label" style="font-size: medium; margin-left: 1em">
+                                    <input class="form-check-input" type="radio" name="loss" id="exampleRadios1" value="squared_loss" checked>
+                                    squared_loss
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label" style="font-size: medium; margin-left: 1em">
+                                    <input class="form-check-input" type="radio" name="loss" id="exampleRadios2" value="huber">
+                                    huber
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label" style="font-size: medium; margin-left: 1em">
+                                    <input class="form-check-input" type="radio" name="loss" id="exampleRadios2" value="epsilon_insensitive">
+                                    epsilon_insensitive
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label" style="font-size: medium; margin-left: 1em">
+                                    <input class="form-check-input" type="radio" name="loss" id="exampleRadios2" value="squared_epsilon_insensitive">
+                                    squared_epsilon_insensitive
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 px-md-1">
+                            <div class="form-check form-check-radio">
+                                <label style="font-size: large;">Penalty</label><br>
+                                <label class="form-check-label" style="font-size: medium">
+                                    <input class="form-check-input" type="radio" name="penalty" id="exampleRadios1" value="l2" checked>
+                                    l2
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label" style="font-size: medium">
+                                    <input class="form-check-input" type="radio" name="penalty" id="exampleRadios2" value="none">
+                                    none
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label" style="font-size: medium">
+                                    <input class="form-check-input" type="radio" name="penalty" id="exampleRadios2" value="l1">
+                                    l1
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label" style="font-size: medium">
+                                    <input class="form-check-input" type="radio" name="penalty" id="exampleRadios2" value="elasticnet">
+                                    elasticnet
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        <div class="col-md-5 pr-md-1">
+                            {{ form.alpha.label(style="font-size: large; margin-left:1em") }}
+                            {{ form.alpha(class="form-control", placeholder="alpha", value='0.0001', style=" margin-left:1em") }}
+                        </div>
+                        <div class="col-md-3 px-md-1">
+                            <div class="col-md-5 pr-md-1">
+                                {{ form.max_iter.label(style="font-size: medium; margin-left:1em") }}
+                                {{ form.max_iter(class="form-control", placeholder="alpha", value='1000',style=" margin-left:1em") }}
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        <div class="form-check form-check-radio form-check-inline">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="MinMaxScaler" checked> MinMax Scaler
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio form-check-inline">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Normalizer"> Normalizer
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio form-check-inline">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Quantile Transform"> Quantile Transform
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio form-check-inline">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="none"> None
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        <label style="margin-left: 1em;font-size: large">Feature Reduction</label>
+                    </div>
+                    <div class="row pl-1">
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio4" value="Variance Based"> Variance Based
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio5" value="K Best"> K Best
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio5" value="none"> None
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        {{ form.p.label(style="margin-left: 1em;font-size: medium") }}
+                        {{ form.p(class="form-control", placeholder="Corresponding parameter value", style="margin-left: 1em;") }}
+                    </div><br>
+                    <div class="card-footer">
+                        {{ form.submit(class="btn btn-fill btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ mlmodel.algo_name }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-primary">
+                    <span>Mean Square Error: {{ mlmodel.rms }}</span>
+                </div>
+                <div class="alert alert-info">
+                    <span>Test:Train :: {{ 100*mlmodel.train_test_split }}:{{ 100*(1 - mlmodel.train_test_split) }}</span>
+                </div>
+                <div class="alert alert-success">
+                    <span>Number of Features: {{ mlmodel.no_of_features }}</span>
+                </div>
+                <div class="alert alert-success">
+                    <span>Normalization: {{ mlmodel.normalization }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if current_algo['Lasso Regression'] %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title">Lasso Regression</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-5 px-md-1">
+                            <div class="form-group">
+                                {{ form.alpha.label(style="margin-left: 1em;font-size: large") }}
+                                {{ form.alpha(class="form-control", placeholder="max depth", style="margin-left: 1em;") }}
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        <label style="margin-left: 1em;font-size: large">Scaler</label>
+                    </div>
+                    <div class="row pl-1">
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="MinMaxScaler"> MinMax Scaler
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Normalizer"> Normalizer
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Quantile Transform"> Quantile Transform
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="none"> None
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        <label style="margin-left: 1em;font-size: large">Feature Reduction</label>
+                    </div>
+                    <div class="row pl-1">
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio4" value="Variance Based"> Variance Based
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio5" value="K Best"> K Best
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style="margin-left: 1em;font-size: medium">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio5" value="none"> None
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        {{ form.p.label(style="margin-left: 1em;font-size: medium") }}
+                        {{ form.p(class="form-control", placeholder="Corresponding parameter value", style="margin-left: 1em;") }}
+                    </div><br>
+                    <div class="card-footer">
+                        {{ form.submit(class="btn btn-fill btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ mlmodel.algo_name }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-primary">
+                    <span>Mean Square Error: {{ mlmodel.rms }}</span>
+                </div>
+                <div class="alert alert-info">
+                    <span>Test:Train :: {{ 100*mlmodel.train_test_split }}:{{ 100*(1 - mlmodel.train_test_split) }}</span>
+                </div>
+                <div class="alert alert-success">
+                    <span>Number of Features: {{ mlmodel.no_of_features }}</span>
+                </div>
+                <div class="alert alert-success">
+                    <span>Normalization: {{ mlmodel.normalization }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if current_algo['Linear Regression'] %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title">Linear Regression</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    <div class="row pl-1">
+                        <label style=" font-size: large;margin-left: 1em;">Scaler</label>
+                    </div>
+                    <div class="row pl-1">
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium; margin:1em">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="MinMaxScaler"> MinMax Scaler
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium; margin:1em">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Normalizer"> Normalizer
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium; margin:1em">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Quantile Transform"> Quantile Transform
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium; margin:1em">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="none"> None
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        <label style=" font-size: large; margin-left: 1em;">Feature Reduction</label>
+                    </div>
+                    <div class="row pl-1">
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium; margin:1em">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio4" value="Variance Based"> Variance Based
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium; margin:1em">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio5" value="K Best"> K Best
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium; margin:1em">
+                                <input class="form-check-input" type="radio" name="feature_reduction" id="inlineRadio5" value="none"> None
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        {{ form.p.label(style=" font-size: medium; margin-left:1em") }}
+                        {{ form.p(class="form-control", placeholder="Corresponding parameter value", style="  margin-left:1em") }}
+                    </div><br>
+                    <div class="card-footer">
+                        {{ form.submit(class="btn btn-fill btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ mlmodel.algo_name }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-primary">
+                    <span>Mean Square Error: {{ mlmodel.rms }}</span>
+                </div>
+                <div class="alert alert-info">
+                    <span>Test:Train :: {{ 100*mlmodel.train_test_split }}:{{ 100*(1 - mlmodel.train_test_split) }}</span>
+                </div>
+                <div class="alert alert-success">
+                    <span>Number of Features: {{ mlmodel.no_of_features }}</span>
+                </div>
+                <div class="alert alert-success">
+                    <span>Normalization: {{ mlmodel.normalization }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

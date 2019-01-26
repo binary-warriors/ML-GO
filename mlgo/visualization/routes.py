@@ -15,13 +15,16 @@ def visualize(dataset_name):
     pca = analysis.pca()
     chisq = analysis.chi2()
     file_name_1, file_name_2 = facets(dataset_name)
-    file_list = scatter(dataset_name)
+    file_list, name_list = scatter(dataset_name)
     tooltip = get_tooltip()
+
+    t_dict = dict(zip(file_list, name_list))
+    print(t_dict)
 
     input_path = os.path.join(visualization.root_path, '../static/data/', dataset_name)
 
     df = pd.read_csv(input_path)
-    sns_plot = sns.pairplot(df, size=2.5)
+    sns_plot = sns.pairplot(df.iloc[:, 0:5], size=2.5)
 
     output_path = os.path.join(visualization.root_path, '../static/data/', dataset_name+'.png')
 
@@ -29,7 +32,7 @@ def visualize(dataset_name):
 
     return render_template('visualizations.html', title='Visualization',
                            dataset_name=dataset_name, pca=pca, chisq=chisq, facet_dive=file_name_1,
-                           facet_overview=file_name_2, plotly_scatter_list=file_list, tooltip=tooltip,
+                           facet_overview=file_name_2, plotly_scatter_dict=t_dict, tooltip=tooltip,
                            output_path='../static/data/'+dataset_name+'.png')
 
 @visualization.route('/visulaization_regression/<string:dataset_name>')
@@ -38,8 +41,11 @@ def visualize_regression(dataset_name):
     pca = analysis.pca()
     # chisq = analysis.chi2()
     file_name_1, file_name_2 = facets(dataset_name)
-    file_list = scatter(dataset_name)
+    file_list, name_list = scatter(dataset_name)
     tooltip = get_tooltip()
+
+    t_dict = dict(zip(file_list, name_list))
+    print(t_dict)
 
     input_path = os.path.join(visualization.root_path, '../static/data/', dataset_name)
 
@@ -52,5 +58,5 @@ def visualize_regression(dataset_name):
 
     return render_template('visualizations_regression.html', title='Visualization',
                            dataset_name=dataset_name, pca=pca, facet_dive=file_name_1,
-                           facet_overview=file_name_2, plotly_scatter_list=file_list, tooltip=tooltip,
+                           facet_overview=file_name_2, plotly_scatter_dict=t_dict, tooltip=tooltip,
                            output_path='../static/data/' + dataset_name + '.png')

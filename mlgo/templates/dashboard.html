@@ -8,21 +8,21 @@
 <div class="row">
     {% for mlmodel in mlmodels %}
     <div class="col-md-4">
-        <div class="card shadow-lg">
-            <div class="card-header">
-                <a href="{{ url_for('datatraining.options',dataset_name=mlmodel.dataset_name, algo_name=mlmodel.algo_name) }}" rel="tooltip" title="{{ tooltip[mlmodel.algo_name] }}"><h4 class="card-title">{{ mlmodel.algo_name }}</h4></a>
+        <div class="card shadow-lg ">
+            <div class="card-header text-center">
+                <a href="{{ url_for('datatraining.options',dataset_name=mlmodel.dataset_name, algo_name=mlmodel.algo_name) }}" rel="tooltip" title="{{ tooltip[mlmodel.algo_name] }}"><h4 class="card-title" style="font-size: x-large"><b>{{ mlmodel.algo_name }}</b></h4></a>
             </div>
-            <div class="card-body">
-                <div class="alert alert-info">
+            <div class="card-body" style="font-size: medium">
+                <div class="alert alert-info" style="margin-left: 3em;margin-right: 3em">
                     <span rel="tooltip" title="{{ tooltip['Accuracy'] }}">Accuracy: {{ mlmodel.accuracy*100 }}</span>
                 </div>
-                <div class="alert alert-info">
+                <div class="alert alert-info" style="margin-left: 3em;margin-right: 3em">
                     <span rel="tooltip" title="{{ tooltip['TrainTest'] }}">Test : Train : : {{ 100*mlmodel.train_test_split }} : {{ 100*(1 - mlmodel.train_test_split) }}</span>
                 </div>
-                <div class="alert alert-info">
+                <div class="alert alert-info" style="margin-left: 3em;margin-right: 3em">
                     <span rel="tooltip" title="{{ tooltip['FeatureSelection'] }}">Number of Features: {{ mlmodel.no_of_features }}</span>
                 </div>
-                <div class="alert alert-info">
+                <div class="alert alert-info" style="margin-left: 3em;margin-right: 3em">
                     <span rel="tooltip" title="{{ tooltip['Normalisation'] }}">Normalization: {{ mlmodel.normalization }}</span>
                 </div>
             </div>

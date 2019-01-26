@@ -6,3 +6,10 @@ class ResultSet:
     normalization = "None"
     no_of_features = ""
 
+class ResultSetRegressor:
+    algo_name = ""
+    dataset_name = ""
+    rms = ""
+    train_test_split = 0.2
+    normalization = "None"
+    no_of_features = ""

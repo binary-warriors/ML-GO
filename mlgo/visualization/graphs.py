@@ -112,6 +112,7 @@ def scatter(data_filename):
     f_list = features.columns
     scatters = []
     i = 0
+    name_list = []
     for ft in f_list:
         if i > 10:
             break
@@ -127,7 +128,7 @@ def scatter(data_filename):
             textposition='bottom center'
         )
         layout = go.Layout(
-            title=ft + " vs " + labels.columns,
+            title='Scatter Plot',
             hovermode='closest',
             xaxis=dict(
                 title=ft
@@ -137,6 +138,7 @@ def scatter(data_filename):
             ),
             showlegend=False
         )
+        name_list.append(ft+" vs "+labels.columns)
         data = [trc]
         fig = go.Figure(data=data, layout=layout)
         random_hex = secrets.token_hex(8)
@@ -145,4 +147,4 @@ def scatter(data_filename):
         pof.plot(fig, filename=filename, auto_open=False)
         scatters.append(random_hex+".html")
 
-    return scatters
+    return scatters, name_list

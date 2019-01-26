@@ -18,37 +18,7 @@ class Analysis:
         data = pd.read_csv(filepath, header=0)
         data.reset_index()
         self.data = data
-        self.dataset_name = data_file
-        self.num_rows = data.shape[0]
-        self.num_cols = data.shape[1]
-
-    def get_labels(self, data):
-        df = data
-        column_names = list(df)
-        df.columns = list(range(0, len(df.columns)))
-        features = df.drop(columns=[len(df.columns) -1])
-        labels = df.get(len(df.columns) -1)
-        features.columns = column_names[:-1]
-        labels.columns = column_names[-1]
-        return features, labels
-
-    def pca(self):
-        features, targets = self.get_labels(self.data)
-        model = PCA()
-        model.fit(features, targets)
-        covariance = model.get_covariance()
-        precision = model.get_precision()
-        score = model.score(features, targets)
-        log_likelihood = model.score_samples(features)
-        cv = ""
-        prec = ""
-        for line in covariance:
-            for point in line:
-                cv = cv + "<span style=\"padding-right:1em\"></span>" + str(np.round(point, decimals=2))
-            cv = cv + "<br>"
-
-        for line in precision:
-            for point in line:
+        self.dataset_name =
                 prec = prec + "<span style=\"padding-right:1em\"></span>" + str(np.round(point, decimals=2))
             prec = prec + "<br>"
 

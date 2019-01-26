@@ -10,4 +10,4 @@ class UploadForm(FlaskForm):
     url = StringField('File from cloud, eg. Google Drive, Dropbox, OneDrive etc.')
 
     submit = SubmitField('Upload File')
-    download = SubmitField('Start')
+    download = SubmitField('Get Started')

@@ -1,4 +1,4 @@
-{% extends "layout_main.html" %}
+{% extends "layout_main_r.html" %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
@@ -13,7 +13,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-8 ml
+                        <div class="col-lg-8 ml-auto mr-auto">
+                            <label><font size="6">Principal component analysis (PCA)</font></label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationScore('top','left', {{ pca['Score'] }})">Score
                                     </button>
                                 </div>
                                 <div class="col-md-4">
@@ -31,18 +36,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-8 ml-auto mr-auto">
-                            <label><font size="6">Chi<sup>2</sup> Test</font></label>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary btn-block"
-                                            onclick="demo.showNotificationChiSquareStat('top','right', {{ chisq['Chi2Stat'] }})">
-                                        &chi;<sup>2</sup><sub>-stat</sub></button>
-                                </div>
-                                <div class="col-md-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-12">
-        <div class="card" style="padding: 2em">
+        <div class="card " style="padding: 2em">
             <div class="card-header">
                 <h4 class="title"><font size="6">Deep Dive into Data</font></h4>
             </div>
@@ -58,7 +60,7 @@
             <div class="card-header">
                 <h4 class="title"><font size="6">Data Specification</font></h4>
             </div>
-            <div class="card-body" style="padding-left: 15em; padding-right: 15em">
+            <div class="card-body">
                 {% include facet_overview %}
             </div>
         </div>

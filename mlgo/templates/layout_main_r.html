@@ -29,26 +29,26 @@
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
       -->
       <div class="sidebar-wrapper">
-        <div class="logo">
-          <a href="{{url_for('main.home')}}" class="simple-text logo-normal">ML-GO HOME</a>
+        <div class="logo" >
+          <a href="{{url_for('main.home')}}" class="simple-text logo-normal text-center" style="font-size: large">HOME</a>
         </div>
         <ul class="nav">
           <li class="active ">
             <a href="{{ url_for('datatraining.dashboard_regression', dataset_name=dataset_name) }}">
               <i class="tim-icons icon-chart-pie-36"></i>
-              <p>Dashboard</p>
+              <p style="font-size: medium">Dashboard</p>
             </a>
           </li>
           <li>
             <a href="{{ url_for('visualization.visualize_regression', dataset_name=dataset_name) }}">
               <i class="tim-icons icon-atom"></i>
-              <p>Visualization</p>
+              <p style="font-size: medium">Visualization</p>
             </a>
           </li>
           <li>
             <a href="#">
               <i class="tim-icons icon-single-02"></i>
-              <p>User Profile</p>
+              <p style="font-size: medium">User Profile</p>
             </a>
           </li>
           <!--<li>-->
@@ -60,7 +60,7 @@
           <li>
             <a href="#">
               <i class="tim-icons icon-bell-55"></i>
-              <p>Notifications</p>
+              <p style="font-size: medium">Notifications</p>
             </a>
           </li>
         </ul>
@@ -171,12 +171,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ url_for('main.about') }}" class="nav-link" rel="tooltip" title="{{ tooltip['AboutUs'] }}">
+              <a href="{{ url_for('main.about') }}" target="_blank" class="nav-link" rel="tooltip" title="{{ tooltip['AboutUs'] }}">
                 About Us
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ url_for('main.news') }}" class="nav-link" rel="tooltip" title="{{ tooltip['News'] }}">
+              <a href="{{ url_for('main.news') }}" target="_blank" class="nav-link" rel="tooltip" title="{{ tooltip['News'] }}">
                 News
               </a>
             </li>

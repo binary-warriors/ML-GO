@@ -112,8 +112,9 @@ def options(dataset_name, algo_name):
                            dataset_name=dataset_name, tooltip=tooltip)
 
 
-@data_training.route("/dashboard/<string:dataset_name>/<string:algo_name>/options", methods=['GET', 'POST'])
+@data_training.route("/options_regression/<string:dataset_name>/<string:algo_name>/options", methods=['GET', 'POST'])
 def options_regression(dataset_name, algo_name):
+    print("***", " In option Regression", "********")
     form = OptionsForm()
 
     current_algo = {'SGD': False, 'Lasso Regression': False, 'Linear Regression': False}
@@ -125,6 +126,7 @@ def options_regression(dataset_name, algo_name):
     if request.method == 'POST':
         print("form.validate_on_submit(): ", form.validate_on_submit())
         print(request.form)
+        print(algo_name)
         if algo_name == 'SGD':
             rs = obj.sgd(loss=request.form['loss'], penalty=request.form['penalty'], alpha=form.alpha.data, max_iter=form.max_iter.data, scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'], p=form.p.data)
         elif algo_name == 'Lasso Regression':
@@ -135,15 +137,20 @@ def options_regression(dataset_name, algo_name):
         return render_template('options_regression.html', title='Parameter Tuning', form=form, mlmodel=rs,
                                current_algo=current_algo, dataset_name=dataset_name, tooltip=tooltip)
 
-    print(algo_name)
+    print(algo_name, " ####################")
 
     if algo_name == 'SGD':
+        print("In SGD")
         rs = obj.sgd()
     elif algo_name == 'Linear Regression':
+        print("In Linear Regression")
         rs = obj.linear()
     elif algo_name == 'Lasso Regression':
+        print("In Lasso Regression")
         rs = obj.lasso()
+        print(": ", rs, " :")
+    else:
+        print("In else")
 
     return render_template('options_regression.html', title='Parameter Tuning', form=form, mlmodel=rs, current_algo=current_algo,
                            dataset_name=dataset_name, tooltip=tooltip)
-

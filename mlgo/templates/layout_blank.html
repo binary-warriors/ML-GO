@@ -5,16 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='assets/img/apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/img/favicon.png') }}">
-  {% if title %}
-  <title>
-    ML-GO - {{ title }}
-  </title>
-  {% else %}
-    ML-GO
-  {% endif %}
+
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
   <!-- Nucleo Icons -->
   <link href="{{ url_for('static', filename='assets/css/nucleo-icons.css') }}" rel="stylesheet" />
   <!-- CSS Files -->
@@ -28,9 +23,7 @@
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
         <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">ML-GO</a>
-          </div>
+
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -122,12 +115,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ url_for('main.about') }}" class="nav-link" rel="tooltip" title="{{ tooltip['AboutUs'] }}">
+              <a href="{{ url_for('main.about') }}" target="_blank" class="nav-link" rel="tooltip" title="{{ tooltip['AboutUs'] }}">
                 About Us
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ url_for('main.news') }} " class="nav-link" rel="tooltip" title="{{ tooltip['News'] }}">
+              <a href="{{ url_for('main.news') }} " target="_blank" class="nav-link" rel="tooltip" title="{{ tooltip['News'] }}">
                 News
               </a>
             </li>
