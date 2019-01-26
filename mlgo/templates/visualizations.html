@@ -1,0 +1,79 @@
+{% extends "layout_main.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="places-buttons">
+                    <div class="row">
+                        <div class="col-md-6 ml-auto mr-auto text-center">
+                            <h4 class="card-title"><font size="6">Where The World Comes To Life</font><br>Visualizations
+                                <p class="category">Click to view info about that parameter</p>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 ml-auto mr-auto">
+                            <label><font size="6">Principal component analysis (PCA)</font></label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationScore('top','left', {{ pca['Score'] }})">Score
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationCovariance('top','left', '{{ pca['Covariance'] }}')">
+                                        Covariance
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationPrecision('top','left', '{{ pca['Precision'] }}')">
+                                        Precision
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 ml-auto mr-auto">
+                            <label><font size="6">Chi<sup>2</sup> Test</font></label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationChiSquareStat('top','right', {{ chisq['Chi2Stat'] }})">
+                                        &chi;<sup>2</sup><sub>-stat</sub></button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationPValue('top','right', {{ chisq['P value'] }})">
+                                        P Value
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationDegreeOfFreedom('top','right', {{ chisq['Degree of Freedom'] }})">
+                                        Degree Of Freedom
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title"><font size="6">Deep Dive into Data</font></h4>
+            </div>
+            <div class="card-body">
+                {% include facet_dive %}
+            </div>
+        </div>
+    </div>
+</div>

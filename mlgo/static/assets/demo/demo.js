@@ -789,6 +789,49 @@ demo = {
   showNotificationChiSquareStat: function(from, align, single_value) {
     color = Math.floor((Math.random() * 4) + 1);
 
+    $.notify({
+      icon: "tim-icons icon-bulb-63",
+      message: "<b>ChiSquareStat</b> - This score can be used to select the n_features features with the highest values for the test chi-squared statistic from X, which must contain only non-negative features such as booleans or frequencies (e.g., term counts in document classification), relative to the classes.<br><br>&chi;<sup>2</sup>-stat: "+single_value
+    }, {
+      type: type[color],
+      timer: 8000,
+      placement: {
+        from: from,
+        align: align
+      }
+    });
+  },
 
+  showNotificationPValue: function(from, align, single_value) {
+    color = Math.floor((Math.random() * 4) + 1);
+
+    $.notify({
+      icon: "tim-icons icon-bulb-63",
+      message: "<b>PValue</b> - In statistical hypothesis testing, the p-value or probability value or asymptotic significance is the probability for a given statistical model that, when the null hypothesis is true, the statistical summary (such as the sample mean difference between two compared groups) would be greater than or equal to the actual observed results.<br><br>PValue: "+single_value
+    }, {
+      type: type[color],
+      timer: 8000,
+      placement: {
+        from: from,
+        align: align
+      }
+    });
+  },
+
+  showNotificationDegreeOfFreedom: function(from, align, single_value) {
+    color = Math.floor((Math.random() * 4) + 1);
+
+    $.notify({
+      icon: "tim-icons icon-bulb-63",
+      message: "<b>DegreeOfFreedom</b> - In statistics, the number of degrees of freedom is the number of values in the final calculation of a statistic that are free to vary.<br><br>DegreeOfFreedom: "+single_value
+    }, {
+      type: type[color],
+      timer: 8000,
+      placement: {
+        from: from,
+        align: align
+      }
+    });
+  },
 
 };
