@@ -1,3 +1,4 @@
+{% extends "layout_main.html" %}
 {% block content %}
 <div class="row">
     {% if current_algo['Decision Tree'] %}
@@ -25,7 +26,36 @@
                                     <span class="form-check-sign"></span>
                                 </label>
                             </div>
-                        
+                        </div>
+                        <div class="col-md-3 px-md-1">
+                            <div class="form-group">
+                                {{ form.max_depth.label() }}
+                                {{ form.max_depth(class="form-control", placeholder="max depth") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-md-1">
+                            <div class="form-group">
+                                {{ form.min_samples_split.label() }}
+                                {{ form.min_samples_split(class="form-control", placeholder="min samples split", value='2') }}
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row pl-1">
+                        <label>Scaler</label>
+                    </div>
+                    <div class="row pl-1">
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="aa" id="inlineRadio1" value="MinMaxScaler"> MinMax Scaler
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="aa" id="inlineRadio2" value="Normalizer"> Normalizer
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
                         <div class="form-check form-check-radio">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="radio" name="aa" id="inlineRadio3" value="Quantile Transform"> Quantile Transform

@@ -12,22 +12,18 @@ def home():
     form = UploadForm()
     print("in home")
     tooltip = get_tooltip()
+    if request.method == 'POST':
+        print("in post", form.validate_on_submit())
         if form.validate_on_submit():
             if form.url.data:
                 print("downloading...")
                 print(form.url.data)
                 data_file = download(form.url.data)
                 print(data_file)
-                return redirect(url_for('datatrain.dashboard', dataset_name=data_file, tooltip=tooltip))
-            elif form.data_file.data:
-                print("sending for saving")
-                data_file = save_file(form.data_file.data)
-                print(data_file)
-                return None
-        else:
-            pass
-
-    return render_template('home.html', form=form, tooltip=tooltip)
+                if request.form['stream'] == 'classification':
+                    return redirect(url_for('datatraining.dashboard', dataset_name=data_file, tooltip=tooltip))
+                elif request.form['stream'] == 'regression':
+                 tooltip)
 
 
 @main.route("/about")
@@ -41,4 +37,3 @@ def news():
     tooltip = get_tooltip()
     news_1 = get_news()
     return render_template('news.html', title='News', news_all=news_1, tooltip=tooltip)
-

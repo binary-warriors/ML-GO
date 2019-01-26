@@ -13,38 +13,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-8 ml-auto mr-auto">
-                            <label><font size="6">Principal component analysis (PCA)</font></label>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary btn-block"
-                                            onclick="demo.showNotificationScore('top','left', {{ pca['Score'] }})">Score
-                                    </button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary btn-block"
-                                            onclick="demo.showNotificationCovariance('top','left', '{{ pca['Covariance'] }}')">
-                                        Covariance
-                                    </button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary btn-block"
-                                            onclick="demo.showNotificationPrecision('top','left', '{{ pca['Precision'] }}')">
-                                        Precision
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-8 ml-auto mr-auto">
-                            <label><font size="6">Chi<sup>2</sup> Test</font></label>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary btn-block"
-                                            onclick="demo.showNotificationChiSquareStat('top','right', {{ chisq['Chi2Stat'] }})">
-                                        &chi;<sup>2</sup><sub>-stat</sub></button>
-                                </div>
+                        <div class="col-lg-8 ml-auto m
                                 <div class="col-md-4">
                                     <button class="btn btn-primary btn-block"
                                             onclick="demo.showNotificationPValue('top','right', {{ chisq['P value'] }})">
@@ -77,3 +46,42 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title"><font size="6">Data Specification</font></h4>
+            </div>
+            <div class="card-body">
+                {% include facet_overview %}
+            </div>
+        </div>
+    </div>
+</div>
+{% for plotly_scatter in plotly_scatter_list%}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title"><font size="6">Scatter Plot</font></h4>
+            </div>
+            <div class="card-body">
+               
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title"><font size="6">Pair Plot</font></h4>
+            </div>
+            <div class="card-body">
+                <img class="card-img-top" src="{{ output_path }}" alt="Card image cap">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

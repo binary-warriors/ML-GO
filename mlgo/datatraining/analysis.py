@@ -32,7 +32,35 @@ class Analysis:
         labels.columns = column_names[-1]
         return features, labels
 
-    
+    def pca(self):
+        features, targets = self.get_labels(self.data)
+        model = PCA()
+        model.fit(features, targets)
+        covariance = model.get_covariance()
+        precision = model.get_precision()
+        score = model.score(features, targets)
+        log_likelihood = model.score_samples(features)
+        cv = ""
+        prec = ""
+        for line in covariance:
+            for point in line:
+                cv = cv + "<span style=\"padding-right:1em\"></span>" + str(np.round(point, decimals=2))
+            cv = cv + "<br>"
+
+        for line in precision:
+            for point in line:
+                prec = prec + "<span style=\"padding-right:1em\"></span>" + str(np.round(point, decimals=2))
+            prec = prec + "<br>"
+
+        result_dict = {
+            'Test': 'Principal Component Analysis',
+            'Score': score,
+            'Covariance': cv,
+            'Precision': prec
+            # 'Log-Likelihood': log_likelihood
+        }
+        return result_dict
+
     def chi2(self):
         features, targets = self.get_labels(self.data)
         chi2_stat, p_value, degree_of_freedom, _not_used = chi2_contingency(features)

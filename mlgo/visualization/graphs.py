@@ -42,3 +42,107 @@ def dive(data_filename):
     print(random_hex+'html')
     return random_hex+'.html'
 
+
+def overview(data_filename):
+    filepath = os.path.join(current_app.root_path, 'static/data', data_filename)
+    data = pd.read_csv(filepath, header=0)
+    data.reset_index()
+
+    gfsg = GenericFeatureStatisticsGenerator()
+    proto = gfsg.ProtoFromDataFrames([{'name': 'train', 'table': data}])
+    protostr = base64.b64encode(proto.SerializeToString()).decode("utf-8")
+    html = HTML_TEMPLATE_OVERVIEW.format(protostr=protostr)
+    random_hex = secrets.token_hex(8)
+    fw = open('mlgo/templates/' + random_hex + '.html', 'w')
+    fw.write(html)
+    fw.close()
+    print(random_hex + '.html')
+    return random_hex + '.html'
+
+
+def get_labels(data):
+    df = data
+    column_names = list(df)
+    df.columns = list(range(0, len(df.columns)))
+    features = df.drop(columns=[len(df.columns) - 1])
+    labels = df.get(len(df.columns) - 1)
+    features.columns = column_names[:-1]
+    labels.columns = column_names[-1]
+    return features, labels
+
+
+def scatter_subplots(data_filename):
+    filepath = os.path.join(current_app.root_path, 'static/data', data_filename)
+    data = pd.read_csv(filepath, header=0)
+    data.reset_index()
+
+    features, labels = get_labels(data)
+
+    num_features = features.shape[1]
+    if num_features % 2 != 0:
+        rows = int(num_features / 2) + 1
+    else:
+        rows = int(num_features / 2)
+    fig = tools.make_subplots(rows=rows, cols=2)
+    f_list = list(features)
+    i = 0
+    for ft in f_list:
+        trc = go.Scatter(
+            x=features[ft],
+            y=labels,
+            mode='markers+text'
+        )
+        j = int(i / 2) + 1
+        fig.append_trace(trc, j, (i % 2) + 1)
+        i = i + 1
+    random_hex = secrets.token_hex(8)
+    filename = os.path.join(current_app.root_path, 'templates', random_hex+".html")
+    print(random_hex + 'html')
+    pof.plot(fig, filename=filename, auto_open=False)
+    return random_hex+".html"
+
+
+def scatter(data_filename):
+    filepath = os.path.join(current_app.root_path, 'static/data', data_filename)
+    data = pd.read_csv(filepath, header=0)
+    data.reset_index()
+
+    features, labels = get_labels(data)
+
+    f_list = features.columns
+    scatters = []
+    i = 0
+    for ft in f_list:
+        if i > 10:
+            break
+        i = i+1
+        trc = go.Scatter(
+            x=features[ft],
+            y=labels,
+            mode='markers+text',
+            marker=dict(
+                color=np.random.randn(500),
+                colorscale='Viridis'
+            ),
+            textposition='bottom center'
+        )
+        layout = go.Layout(
+            title=ft + " vs " + labels.columns,
+            hovermode='closest',
+            xaxis=dict(
+                title=ft
+            ),
+            yaxis=dict(
+                title=labels.columns
+            ),
+            showlegend=False
+        )
+        data = [trc]
+        fig = go.Figure(data=data, layout=layout)
+        random_hex = secrets.token_hex(8)
+        filename = os.path.join(current_app.root_path, 'templates', random_hex + ".html")
+        print(random_hex + 'html')
+        pof.plot(fig, filename=filename, auto_open=False)
+        scatters.append(random_hex+".html")
+
+    return scatters

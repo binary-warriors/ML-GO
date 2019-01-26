@@ -56,7 +56,65 @@ class ML_Models():
         labels.columns = column_names[-1]
         return features, labels
 
-    
+    def clean_data(self):
+        data = self.data
+        data.fillna(data.mean(), inplace=True)
+        data.fillna(data.median(), inplace=True)
+        data.fillna(data.mode(), inplace=True)
+        self.data = data
+
+    def scale_data(self, data, scaler='MinMaxScaler'):
+        if scaler is None:
+            return data
+
+        if scaler not in ['MinMaxScaler', 'Normalizer', 'Quantile_Transform']:
+            scaler = 'MinMaxScaler'
+
+        mmc = MinMaxScaler()
+        nm = Normalizer()
+
+        if scaler == 'MinMaxScaler':
+            print('In MinMaxScaler')
+            mmc.fit(data)
+            scaled_data = mmc.transform(data)
+            print(type(scaled_data))
+            return scaled_data
+        elif scaler == 'Normalizer':
+            scaled_data_temp = nm.fit(data)
+            scaled_data = scaled_data_temp.transform(data)
+            return scaled_data
+        elif scaler == 'Quantile_Transform':
+            return quantile_transform(data, n_quantiles=100, random_state=0)
+
+    def select_features(self, features, labels,  params,  algo="All"):
+        print("Algo : ",algo)
+        print("run1")
+        if algo is 'All' or algo not in ['Variance Based', 'K Best']:
+            return features,  features.shape[1]
+        print('run2')
+        if algo == 'Variance Based':
+            print("In variance based")
+            try:
+                params = float(params)
+            except:
+                params = 0.0
+
+            if params < 0:
+                params = 0.0
+            new_features = variance_based(features, labels, params)
+            #new_test_f = variance_based(test_f, test_l, params)
+            return new_features, new_features.shape[1]
+        elif algo == 'K Best':
+            print("In k best")
+            try:
+                params = int(params)
+            except:
+                params = 10
+            new_features = select_k_best(features, labels, params)
+            #new_test_f = select_k_best(features, labels, params)
+            no_features = new_features.shape[1]
+            return new_features,  no_features
+        print("End of function")
 
     def decision_tree(self, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, scaler=None, feature_selection='All', p=0.0):
         data = self.data
@@ -438,7 +496,8 @@ class ML_Models():
         test_labels = test_labels.values.reshape(test_features.shape[0], 1)
         print(train_features.shape)
         print(train_labels.shape)
-        
+        recon_train = np.hstack((train_features, train_labels))
+        recon_test = np.hstack((test_features, test_labels))
         reconstructed_data = np.concatenate((recon_train, recon_test))
         reconstructed_data_df = pd.DataFrame(reconstructed_data, index=None)
         re_features = reconstructed_data_df.drop(columns=[len(reconstructed_data_df.columns) - 1])

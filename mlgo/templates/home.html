@@ -40,7 +40,22 @@
                             </small>
                         </div>
                         <div class="form-group">
-                            {{ form.dalass="form-check-label">
+                            {{ form.data_file.label() }}
+                            {{ form.data_file(class="form-control-file") }}
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="stream" id="inlineRadio2" value="classification" checked> Classification
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label">
                                     <input class="form-check-input" type="radio" name="stream" id="inlineRadio1" value="regression"> Regression
                                     <span class="form-check-sign"></span>
                                 </label>

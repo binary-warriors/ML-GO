@@ -7,8 +7,8 @@
 </style>
 <div class="row">
     {% for mlmodel in mlmodels %}
-    <div class="col-md-6">
-        <div class="card">
+    <div class="col-md-4">
+        <div class="card shadow-lg">
             <div class="card-header">
                 <a href="{{ url_for('datatraining.options',dataset_name=mlmodel.dataset_name, algo_name=mlmodel.algo_name) }}" rel="tooltip" title="{{ tooltip[mlmodel.algo_name] }}"><h4 class="card-title">{{ mlmodel.algo_name }}</h4></a>
             </div>

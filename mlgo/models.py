@@ -5,3 +5,4 @@ class ResultSet:
     train_test_split = 0.2
     normalization = "None"
     no_of_features = ""
+
