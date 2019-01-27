@@ -13,7 +13,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-8 ml
+                        <div class="col-lg-8 ml-auto mr-auto">
+                            <label><font size="6">Principal component analysis (PCA)</font></label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationScore('top','left', {{ pca['Score'] }})">Score
                                     </button>
                                 </div>
                                 <div class="col-md-4">
@@ -41,6 +46,26 @@
                                         &chi;<sup>2</sup><sub>-stat</sub></button>
                                 </div>
                                 <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationPValue('top','right', {{ chisq['P value'] }})">
+                                        P Value
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-block"
+                                            onclick="demo.showNotificationDegreeOfFreedom('top','right', {{ chisq['Degree of Freedom'] }})">
+                                        Degree Of Freedom
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-12">
         <div class="card" style="padding: 2em">
             <div class="card-header">

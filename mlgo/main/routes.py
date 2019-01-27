@@ -23,7 +23,7 @@ def home():
                 if request.form['stream'] == 'classification':
                     return redirect(url_for('datatraining.dashboard', dataset_name=data_file, tooltip=tooltip))
                 elif request.form['stream'] == 'regression':
-                    return redirect(url_for('datatraining.dashboard_regression', dataset_name=data_file, tooltip=tooltip))
+                    return redirect(url_for('datatraining.dashboard_regression', dataset_name=data_file))
             elif form.data_file.data:
                 print("sending for saving")
                 data_file = save_file(form.data_file.data)
@@ -31,7 +31,7 @@ def home():
                 if request.form['stream'] == 'classification':
                     return redirect(url_for('datatraining.dashboard', dataset_name=data_file, tooltip=tooltip))
                 elif request.form['stream'] == 'regression':
-                    return redirect(url_for('datatraining.dashboard_regression', dataset_name=data_file, tooltip=tooltip))
+                    return redirect(url_for('datatraining.dashboard_regression', dataset_name=data_file))
         else:
             pass
 

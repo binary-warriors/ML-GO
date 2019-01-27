@@ -41,6 +41,11 @@ def options(dataset_name, algo_name):
     if request.method == 'POST':
         print("form.validate_on_submit(): ", form.validate_on_submit())
         print(request.form)
+        try:
+            ttratio = float(form.test_train.data)
+        except:
+            ttratio = 0.3
+        print("sdvdc ",ttratio)
         if algo_name == 'Decision Tree':
             print(request.form['exampleRadios'], ", ", form.max_depth.data, ", ", form.min_samples_leaf.data,
                   ", ", form.min_samples_split.data,", ", request.form['aa'], request.form['feature_reduction'], form.p.data)
@@ -50,7 +55,7 @@ def options(dataset_name, algo_name):
             elif form.min_samples_leaf.data == '':
                 form.min_samples_leaf.data = '1'
 
-            rs = obj.decision_tree(criterion=request.form['exampleRadios'], max_depth=form.max_depth.data,
+            rs = obj.decision_tree(test_train_split=ttratio, criterion=request.form['exampleRadios'], max_depth=form.max_depth.data,
                                    min_samples_split=int(form.min_samples_split.data),
                                    min_samples_leaf=int(form.min_samples_leaf.data),
                                    scaler=request.form['aa'], feature_selection=request.form['feature_reduction'],
@@ -60,32 +65,34 @@ def options(dataset_name, algo_name):
             print(request.form['kernel'], " ", form.gamma.data, " ",request.form['scaler'])
             rs = obj.svm(c=form.c.data,kernel=request.form['kernel'], gamma=form.gamma.data, max_iter=form.max_iterations.data,
                          scaler=request.form['scaler'], feature_selection=request.form['feature_reduction'],
-                         p=form.p.data)
+                         p=form.p.data, test_train_split=ttratio)
         elif algo_name == 'Naive Bayes':
             rs = obj.naive_bayes(scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'],
-                         p=form.p.data)
+                         p=form.p.data, test_train_split=ttratio)
         elif algo_name == 'KNN':
             rs = obj.knn(n_neighbors=form.n_neighbors.data, algorithm=request.form['algo'],
                          weights=request.form['weights'], leaf_size=form.leaf_size.data, scaler=request.form['inlineRadioOptions'],
                          feature_selection=request.form['feature_reduction'],
-                         p=form.p.data)
+                         p=form.p.data, test_train_split=ttratio)
         elif algo_name == 'Random Forest':
             rs = obj.random_forest(criterion=request.form['exampleRadios'], max_depth=form.max_depth.data,
                                    min_samples_split=int(form.min_samples_split.data),
                                    min_samples_leaf=int(form.min_samples_leaf.data),
                                    scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'],
-                                   p=form.p.data)
+                                   p=form.p.data, test_train_split=ttratio)
         elif algo_name == 'CNN':
             rs = obj.cnn(alpha=form.alpha.data, activation=request.form['activation'], max_iter=form.max_iter.data,
                          scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'],
-                         p=form.p.data)
+                         p=form.p.data, test_train_split=ttratio)
         elif algo_name == 'Adaboost':
             rs = obj.adaboost(algorithm=request.form['algorithm'], n_estimators=form.n_estimators.data, learning_rate=form.learning_rate.data,
                               scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'],
-                              p=form.p.data)
+                              p=form.p.data, test_train_split=ttratio)
 
+        print("rs = ", rs.train_test_split)
         return render_template('options.html', title='Parameter Tuning', form=form, mlmodel=rs,
-                               current_algo=current_algo, dataset_name=dataset_name, tooltip=tooltip)
+                               current_algo=current_algo, dataset_name=dataset_name, tooltip=tooltip,
+                               test_train_split=ttratio)
 
     print(algo_name)
 
@@ -126,13 +133,18 @@ def options_regression(dataset_name, algo_name):
     if request.method == 'POST':
         print("form.validate_on_submit(): ", form.validate_on_submit())
         print(request.form)
+        ttratio = 0.3
+        try:
+            ttratio = float(form.test_train.data)
+        except:
+            ttratio = 0.3
         print(algo_name)
         if algo_name == 'SGD':
-            rs = obj.sgd(loss=request.form['loss'], penalty=request.form['penalty'], alpha=form.alpha.data, max_iter=form.max_iter.data, scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'], p=form.p.data)
+            rs = obj.sgd(loss=request.form['loss'], penalty=request.form['penalty'], alpha=form.alpha.data, max_iter=form.max_iter.data, scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'], p=form.p.data, test_train_split=ttratio)
         elif algo_name == 'Lasso Regression':
-            rs = obj.lasso(alpha=form.alpha.data, scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'], p=form.p.data)
+            rs = obj.lasso(alpha=form.alpha.data, scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'], p=form.p.data, test_train_split=ttratio)
         elif algo_name == 'Linear Regression':
-            rs = obj.linear(scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'], p=form.p.data)
+            rs = obj.linear(scaler=request.form['inlineRadioOptions'], feature_selection=request.form['feature_reduction'], p=form.p.data, test_train_split=ttratio)
 
         return render_template('options_regression.html', title='Parameter Tuning', form=form, mlmodel=rs,
                                current_algo=current_algo, dataset_name=dataset_name, tooltip=tooltip)

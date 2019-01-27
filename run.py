@@ -7,7 +7,6 @@ os.environ['http_proxy'] = proxy
 os.environ['HTTP_PROXY'] = proxy
 os.environ['https_proxy'] = proxy
 os.environ['HTTPS_PROXY'] = proxy
-
 app = create_app()
 
 if __name__ == '__main__':

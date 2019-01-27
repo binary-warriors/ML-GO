@@ -18,4 +18,5 @@ class OptionsForm(FlaskForm):
     max_iter = StringField('max iteration')
     n_estimators = StringField('n estimators')
     learning_rate = StringField('Learning Rate')
+    test_train = StringField('Test : Train Ratio')
     submit = SubmitField('Go')

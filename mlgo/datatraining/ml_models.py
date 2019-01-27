@@ -40,7 +40,20 @@ class ML_Models():
     def __init__(self, data_file):
         filepath = os.path.join(current_app.root_path, 'static/data', data_file)
         data = pd.read_csv(filepath, header=0)
+        if data.shape[1] == 1:
+            data = pd.read_csv(filepath, header=0, delimiter='\t')
         data.reset_index()
+        self.data = data
+        columns = data.columns
+        for col in columns[:-1]:
+            try:
+                data[col] = data[col].astype('float64')
+            except:
+                data[col] = pd.factorize(data[col])[0]
+        try:
+            data[columns[-1]] = data[columns[-1]].astype('int64')
+        except:
+            data[columns[-1]] = pd.factorize(data[columns[-1]])[0]
         self.data = data
         self.dataset_name = data_file
         self.num_rows = data.shape[0]
@@ -68,15 +81,64 @@ class ML_Models():
             return data
 
         if scaler not in ['MinMaxScaler', 'Normalizer', 'Quantile_Transform']:
-            scaler = 'Mms)
+            scaler = 'MinMaxScaler'
+
+        mmc = MinMaxScaler()
+        nm = Normalizer()
+
+        if scaler == 'MinMaxScaler':
+            print('In MinMaxScaler')
+            mmc.fit(data)
+            scaled_data = mmc.transform(data)
+            print(type(scaled_data))
+            return scaled_data
+        elif scaler == 'Normalizer':
+            scaled_data_temp = nm.fit(data)
+            scaled_data = scaled_data_temp.transform(data)
+            return scaled_data
+        elif scaler == 'Quantile_Transform':
+            return quantile_transform(data, n_quantiles=100, random_state=0)
+
+    def select_features(self, features, labels,  params,  algo="All"):
+        print("Algo : ",algo)
+        print("run1")
+        if algo is 'All' or algo not in ['Variance Based', 'K Best']:
+            return features,  features.shape[1]
+        print('run2')
+        if algo == 'Variance Based':
+            print("In variance based")
+            try:
+                params = float(params)
+            except:
+                params = 0.0
+
+            if params < 0:
+                params = 0.0
+            new_features = variance_based(features, labels, params)
+            #new_test_f = variance_based(test_f, test_l, params)
+            return new_features, new_features.shape[1]
+        elif algo == 'K Best':
+            print("In k best")
+            try:
+                params = int(params)
+            except:
+                params = 10
+            new_features = select_k_best(features, labels, params)
             #new_test_f = select_k_best(features, labels, params)
             no_features = new_features.shape[1]
             return new_features,  no_features
         print("End of function")
 
-    def decision_tree(self, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, scaler=None, feature_selection='All', p=0.0):
+    def decision_tree(self, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, scaler=None, feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
-        train, test = train_test_split(data, test_size=0.3)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            print("in except")
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
 
         print("\n\n", train.shape, "\n\n", test.shape, "\n\n")
 
@@ -103,7 +165,7 @@ class ML_Models():
         selected_feat = pd.DataFrame(selected_feat, index=None)
         data = pd.concat([selected_feat, re_labels], axis=1)
 
-        train, test = train_test_split(data, test_size=0.3)
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
 
@@ -127,14 +189,20 @@ class ML_Models():
         rs.algo_name = 'Decision Tree'
         rs.dataset_name = self.dataset_name
         rs.accuracy = round(accuracy, 4)
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         rs.no_of_features = num_feat
         return rs
 
-    def svm(self, c=1.0, kernel='rbf', gamma='auto', max_iter=-1, scaler=None, feature_selection='All',p=0.0):
+    def svm(self, c=1.0, kernel='rbf', gamma='auto', max_iter=-1, scaler=None, feature_selection='All',p=0.0, test_train_split=0.3):
         data = self.data
-        train, test = train_test_split(data, test_size=0.2)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
 
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
@@ -161,7 +229,7 @@ class ML_Models():
         selected_feat = pd.DataFrame(selected_feat, index=None)
         data = pd.concat([selected_feat, re_labels], axis=1)
 
-        train, test = train_test_split(data, test_size=0.3)
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
 
@@ -195,14 +263,20 @@ class ML_Models():
         rs.algo_name = 'Support Vector Machine'
         rs.dataset_name = self.dataset_name
         rs.accuracy = round(accuracy, 4)
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         rs.no_of_features = num_feat
         return rs
 
-    def naive_bayes(self, scaler=None, feature_selection='All', p=0.0):
+    def naive_bayes(self, scaler=None, feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
-        train, test = train_test_split(data, test_size=0.2)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
 
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
@@ -229,7 +303,7 @@ class ML_Models():
         selected_feat = pd.DataFrame(selected_feat, index=None)
         data = pd.concat([selected_feat, re_labels], axis=1)
 
-        train, test = train_test_split(data, test_size=0.3)
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
 
@@ -242,14 +316,20 @@ class ML_Models():
         rs.algo_name = 'Naive Bayes'
         rs.dataset_name = self.dataset_name
         rs.accuracy = round(accuracy, 4)
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         rs.no_of_features = num_feat
         return rs
 
-    def knn(self, n_neighbors=5, weights='uniform', algorithm=None, leaf_size=30, scaler=None, feature_selection='All', p=0.0):
+    def knn(self, n_neighbors=5, weights='uniform', algorithm=None, leaf_size=30, scaler=None, feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
-        train, test = train_test_split(data, test_size=0.2)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
 
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
@@ -276,7 +356,7 @@ class ML_Models():
         selected_feat = pd.DataFrame(selected_feat, index=None)
         data = pd.concat([selected_feat, re_labels], axis=1)
 
-        train, test = train_test_split(data, test_size=0.3)
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
 
@@ -308,14 +388,20 @@ class ML_Models():
         rs.algo_name = 'KNN'
         rs.dataset_name = self.dataset_name
         rs.accuracy = round(accuracy, 4)
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         rs.no_of_features = num_feat
         return rs
 
-    def random_forest(self, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, scaler=None, feature_selection='All', p=0.0):
+    def random_forest(self, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, scaler=None, feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
-        train, test = train_test_split(data, test_size=0.3)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
 
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
@@ -342,7 +428,7 @@ class ML_Models():
         selected_feat = pd.DataFrame(selected_feat, index=None)
         data = pd.concat([selected_feat, re_labels], axis=1)
 
-        train, test = train_test_split(data, test_size=0.3)
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
 
@@ -366,14 +452,20 @@ class ML_Models():
         rs.algo_name = 'Random Forest'
         rs.dataset_name = self.dataset_name
         rs.accuracy = round(accuracy, 4)
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         rs.no_of_features = num_feat
         return rs
 
-    def adaboost(self, n_estimators=50, learning_rate=1, algorithm='SAMME.R', scaler=None, feature_selection='All', p=0.0):
+    def adaboost(self, n_estimators=50, learning_rate=1, algorithm='SAMME.R', scaler=None, feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
-        train, test = train_test_split(data, test_size=0.3)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
 
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
@@ -400,7 +492,7 @@ class ML_Models():
         selected_feat = pd.DataFrame(selected_feat, index=None)
         data = pd.concat([selected_feat, re_labels], axis=1)
 
-        train, test = train_test_split(data, test_size=0.3)
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
 
@@ -431,14 +523,20 @@ class ML_Models():
         rs.algo_name = 'Adaboost'
         rs.dataset_name = self.dataset_name
         rs.accuracy = round(accuracy, 4)
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         rs.no_of_features = num_feat
         return rs
 
-    def cnn(self, activation='relu', solver='adam', alpha=0.0001, max_iter=200, scaler='MinMaxScaler', feature_selection='All', p=0.0):
+    def cnn(self, activation='relu', solver='adam', alpha=0.0001, max_iter=200, scaler='MinMaxScaler', feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
-        train, test = train_test_split(data, test_size=0.2)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
 
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
@@ -465,7 +563,7 @@ class ML_Models():
         selected_feat = pd.DataFrame(selected_feat, index=None)
         data = pd.concat([selected_feat, re_labels], axis=1)
 
-        train, test = train_test_split(data, test_size=0.3)
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_labels = self.get_labels(train)
         test_features, test_labels = self.get_labels(test)
 
@@ -499,7 +597,7 @@ class ML_Models():
         rs.algo_name = "CNN"
         rs.dataset_name = self.dataset_name
         rs.accuracy = round(accuracy, 4)
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         rs.no_of_features = num_feat
         return rs

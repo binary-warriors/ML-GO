@@ -11,9 +11,32 @@ visualization = Blueprint('visualization', __name__)
 
 @visualization.route("/visualizations/<string:dataset_name>")
 def visualize(dataset_name):
+    # analysis = Analysis(dataset_name)
+    # pca = analysis.pca()
+    # chisq = analysis.chi2()
     analysis = Analysis(dataset_name)
-    pca = analysis.pca()
-    chisq = analysis.chi2()
+    _pca_result_dict = {
+        'Test': 'Principal Component Analysis',
+        'Score': "NA",
+        'Covariance': ['NA'],
+        'Precision': ['NA']
+        # 'Log-Likelihood': log_likelihood
+    }
+    try:
+        pca = analysis.pca()
+    except:
+        pca = _pca_result_dict
+    _result_dict = {
+        'Test': 'Chi-Squared Analysis',
+        'Chi2Stat': 0,
+        'P value': [""],
+        'Degree of Freedom': [""]
+    }
+
+    try:
+        chisq = analysis.chi2()
+    except:
+        chisq = _result_dict
     file_name_1, file_name_2 = facets(dataset_name)
     file_list, name_list = scatter(dataset_name)
     tooltip = get_tooltip()
@@ -37,9 +60,32 @@ def visualize(dataset_name):
 
 @visualization.route('/visulaization_regression/<string:dataset_name>')
 def visualize_regression(dataset_name):
-    analysis = Analysis(dataset_name)
-    pca = analysis.pca()
+    # analysis = Analysis(dataset_name)
+    # pca = analysis.pca()
     # chisq = analysis.chi2()
+    analysis = Analysis(dataset_name)
+    _pca_result_dict = {
+        'Test': 'Principal Component Analysis',
+        'Score': "NA",
+        'Covariance': ['NA'],
+        'Precision': ['NA']
+        # 'Log-Likelihood': log_likelihood
+    }
+    try:
+        pca = analysis.pca()
+    except:
+        pca = _pca_result_dict
+    # _result_dict = {
+    #     'Test': 'Chi-Squared Analysis',
+    #     'Chi2Stat': 0,
+    #     'P value': [""],
+    #     'Degree of Freedom': [""]
+    # }
+    #
+    # try:
+    #     chisq = analysis.chi2()
+    # except:
+    #     chisq = _result_dict
     file_name_1, file_name_2 = facets(dataset_name)
     file_list, name_list = scatter(dataset_name)
     tooltip = get_tooltip()
@@ -55,6 +101,8 @@ def visualize_regression(dataset_name):
     output_path = os.path.join(visualization.root_path, '../static/data/', dataset_name + '.png')
 
     sns_plot.savefig(output_path)
+
+    print(file_name_1,"\n",file_name_2)
 
     return render_template('visualizations_regression.html', title='Visualization',
                            dataset_name=dataset_name, pca=pca, facet_dive=file_name_1,

@@ -23,7 +23,16 @@ class RegressionModels:
     def __init__(self, data_file):
         filepath = os.path.join(current_app.root_path, 'static/data', data_file)
         data = pd.read_csv(filepath, header=0)
+        if data.shape[1] == 1:
+            data = pd.read_csv(filepath, header=0, delimiter='\t')
         data.reset_index()
+        self.data = data
+        columns = data.columns
+        for col in columns[:-1]:
+            try:
+                data[col] = data[col].astype('float64')
+            except:
+                data[col] = pd.factorize(data[col])[0]
         self.data = data
         self.dataset_name = data_file
         self.num_rows = data.shape[0]
@@ -59,6 +68,23 @@ class RegressionModels:
         if scaler == 'MinMaxScaler':
             print('In MinMaxScaler')
             mmc.fit(data)
+            scaled_data = mmc.transform(data)
+            print(type(scaled_data))
+            return scaled_data
+        elif scaler == 'Normalizer':
+            scaled_data_temp = nm.fit(data)
+            scaled_data = scaled_data_temp.transform(data)
+            return scaled_data
+        elif scaler == 'Quantile_Transform':
+            return quantile_transform(data, n_quantiles=100, random_state=0)
+
+    def select_features(self, features, labels,  params,  algo="All"):
+        print("Algo : ",algo)
+        print("run1")
+        if algo is 'All' or algo not in ['Variance Based', 'K Best']:
+            return features,  features.shape[1]
+        print('run2')
+        if algo == 'Variance Based':
             print("In variance based")
             try:
                 params = float(params)
@@ -82,7 +108,7 @@ class RegressionModels:
             return new_features,  no_features
         print("End of function")
 
-    def sgd(self, loss='squared_loss', penalty='l2', alpha=0.0001, max_iter=1000, scaler=None, feature_selection='All', p=0.0):
+    def sgd(self, loss='squared_loss', penalty='l2', alpha=0.0001, max_iter=1000, scaler=None, feature_selection='All', p=0.0, test_train_split=0.3 ):
         data = self.data
         data = self.scale_data(data=data, scaler=scaler)
 
@@ -95,7 +121,13 @@ class RegressionModels:
         data = np.hstack((selected_features, targets))
         data = pd.DataFrame(data, index=None)
 
-        train, test = train_test_split(data, test_size=0.3)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_targets = self.get_targets(train)
         test_features, test_targets = self.get_targets(test)
 
@@ -129,11 +161,11 @@ class RegressionModels:
         rs.dataset_name = self.dataset_name
         rs.rms = rms
         rs.no_of_features = num
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         return rs
 
-    def lasso(self, alpha=1.0, scaler=None, feature_selection='All', p=0.0):
+    def lasso(self, alpha=1.0, scaler=None, feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
         data = self.scale_data(data=data, scaler=scaler)
 
@@ -146,7 +178,14 @@ class RegressionModels:
         data = np.hstack((selected_features, targets))
         data = pd.DataFrame(data, index=None)
 
-        train, test = train_test_split(data, test_size=0.3)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_targets = self.get_targets(train)
         test_features, test_targets = self.get_targets(test)
 
@@ -165,11 +204,11 @@ class RegressionModels:
         rs.dataset_name = self.dataset_name
         rs.rms = rms
         rs.no_of_features = num
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         return rs
 
-    def linear(self, scaler=None, feature_selection='All', p=0.0):
+    def linear(self, scaler=None, feature_selection='All', p=0.0, test_train_split=0.3):
         data = self.data
         data = self.scale_data(data=data, scaler=scaler)
 
@@ -182,7 +221,14 @@ class RegressionModels:
         data = np.hstack((selected_features, targets))
         data = pd.DataFrame(data, index=None)
 
-        train, test = train_test_split(data, test_size=0.3)
+        try:
+            test_train_split = float(test_train_split)
+            if test_train_split > 0.6:
+                test_train_split = 0.6
+        except:
+            test_train_split = 0.3
+
+        train, test = train_test_split(data, test_size=test_train_split)
         train_features, train_targets = self.get_targets(train)
         test_features, test_targets = self.get_targets(test)
 
@@ -196,6 +242,6 @@ class RegressionModels:
         rs.dataset_name = self.dataset_name
         rs.rms = rms
         rs.no_of_features = num
-        rs.train_test_split = 0.3
+        rs.train_test_split = test_train_split
         rs.normalization = scaler
         return rs
