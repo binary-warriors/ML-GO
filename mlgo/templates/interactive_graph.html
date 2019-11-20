@@ -1,0 +1,119 @@
+{% extends "layout_main.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="places-buttons">
+                        <div class="row">
+                            <div class="col-md-6 ml-auto mr-auto text-center">
+                                <h4 class="card-title"><font size="6"> Feature wise Plots </font>
+                                    <br>Select two column labels to plot a graph
+                                    {#                                <p class="category">Click to view info about that parameter</p>#}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" style="padding: 2em">
+                    <div class="card-header">
+                        <h4 class="title"><font size="6">Select a Graph type</font></h4>
+                    </div>
+
+                    <div class="col-md-5 pr-md-1">
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                                       value="histogram" checked>
+                                Histogram
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                                       value="scatter">
+                                Scatter Plot
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label" style=" font-size: medium">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                                       value="3D-Plot">
+                                3-D Plot
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div>
+    </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="padding: 2em">
+                <div class="card-header">
+                    <h4 class="title"><font size="6">Select Features:</font></h4>
+                </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.feature_1.label(style=" font-size: medium") }}
+                                {{ form.feature_1(class="form-control", placeholder="feature 1") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.feature_2.label(style=" font-size: medium") }}
+                                {{ form.feature_2(class="form-control", placeholder="feature 2") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.feature_3.label(style=" font-size: medium") }}
+                                {{ form.feature_3(class="form-control", placeholder="feature 3") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        {{ form.submit(class="btn btn-fill btn-primary") }}
+                    </div>
+
+            </div>
+        </div>
+    </div>
+    </form>
+    {#{% for plotly_scatter, name in plotly_scatter_dict.items() %}#}
+    {#<div class="row">#}
+    {#    <div class="col-md-12">#}
+    {#        <div class="card" style="padding: 2em">#}
+    {#            <div class="card-header">#}
+    {#                <h4 class="title"><font size="6">{{ name }}</font></h4>#}
+    {#            </div>#}
+    {#            <div class="card-body">#}
+    {#                {% include plotly_scatter %}#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#</div>#}
+    {#{% endfor %}#}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="padding: 2em">
+                <div class="card-header">
+                    <h4 class="title"><font size="6">Plot</font></h4>
+                </div>
+                {#            <div class="card-body">#}
+                {#                <img class="card-img-top" src="{{ output_path }}" alt="Card image cap">#}
+                {#            </div>#}
+            </div>
+        </div>
+    </div>
+{% endblock %}

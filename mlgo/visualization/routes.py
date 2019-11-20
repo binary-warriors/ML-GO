@@ -5,6 +5,7 @@ from mlgo.main.utils import get_tooltip
 import pandas as pd
 import seaborn as sns
 import os
+from mlgo.visualization.forms import OptionsForm
 
 visualization = Blueprint('visualization', __name__)
 
@@ -57,6 +58,38 @@ def visualize(dataset_name):
                            dataset_name=dataset_name, pca=pca, chisq=chisq, facet_dive=file_name_1,
                            facet_overview=file_name_2, plotly_scatter_dict=t_dict, tooltip=tooltip,
                            output_path='../static/data/'+dataset_name+'.png')
+
+
+@visualization.route('/graphs/<string:dataset_name>', methods=['GET', 'POST'])
+def interactive_graphs(dataset_name):
+    tooltip = get_tooltip()
+    form = OptionsForm()
+    plot=""
+    if request.method == "GET":
+        return render_template('interactive_graph.html', title='Graphs', form=form,
+                               dataset_name=dataset_name, tooltip=tooltip,
+                               output_path='../static/data/' + dataset_name + '.png')
+
+    if request.method == "POST":
+        graph = request.form['exampleRadios']
+        feature_1 = form.feature_1
+        feature_2 = form.feature_2
+        feature_3 = form.feature_3
+        print(graph)
+        print(feature_1)
+        print(feature_2)
+        print(feature_3)
+        if graph == "histogram":
+            pass
+        elif graph == "scatter":
+            pass
+        elif graph == "3D-Plot":
+            pass
+        pass
+
+
+
+
 
 @visualization.route('/visulaization_regression/<string:dataset_name>')
 def visualize_regression(dataset_name):

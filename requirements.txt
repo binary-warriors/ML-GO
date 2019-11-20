@@ -1,6 +1,5 @@
 backcall==0.1.0
 bcrypt==3.1.6
-catkin==0.7.14
 certifi==2018.11.29
 cffi==1.11.5
 chardet==3.0.4
@@ -46,7 +45,7 @@ scipy==1.2.0
 seaborn==0.9.0
 six==1.12.0
 sklearn==0.0
-SQLAlchemy==1.2.16
+SQLAlchemy==1.2.18
 traitlets==4.3.2
 urllib3==1.21.1
 wcwidth==0.1.7

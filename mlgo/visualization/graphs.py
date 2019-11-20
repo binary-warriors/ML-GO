@@ -7,7 +7,8 @@ import plotly.offline as pof
 import plotly.graph_objs as go
 from plotly import tools
 import base64
-from generic_feature_statistics_generator import GenericFeatureStatisticsGenerator
+from mlgo.facets.facets_overview.python.generic_feature_statistics_generator import GenericFeatureStatisticsGenerator
+#from generic_feature_statistics_generator import GenericFeatureStatisticsGenerator import
 
 HTML_TEMPLATE = """<link rel="import" href="https://raw.githubusercontent.com/PAIR-code/facets/master/facets-dist/facets-jupyter.html">
         <facets-dive id="elem" height="600"></facets-dive>
@@ -39,7 +40,6 @@ def dive(data_filename):
     fw = open('mlgo/templates/'+random_hex+'.html', 'w')
     fw.write(html)
     fw.close()
-    print(random_hex+'html')
     return random_hex+'.html'
 
 
