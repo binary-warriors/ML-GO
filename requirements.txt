@@ -45,9 +45,9 @@ scipy==1.2.0
 seaborn==0.9.0
 six==1.12.0
 sklearn==0.0
-SQLAlchemy==1.2.18
+SQLAlchemy
 traitlets==4.3.2
-urllib3==1.23
+urllib3
 wcwidth==0.1.7
-Werkzeug==0.14.1
+Werkzeug
 WTForms==2.2.1
